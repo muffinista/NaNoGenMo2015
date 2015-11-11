@@ -1,0 +1,134 @@
+adventure
+alien invasion
+alternative history
+antinovel
+atompunk
+autobiographical
+bildungsroman
+biographical
+biopunk
+bizarro fiction
+body horror
+campus murder mystery
+campus
+classic
+clockpunk
+comedy
+comic fantasy
+contemporary fantasy
+crime fiction
+cyberpunk
+dark fantasy
+detective fiction
+dieselpunk
+drama
+dying earth
+dystopian
+education fiction
+epic
+epic / high fantasy
+ergodic literature
+erotic
+erotic fiction
+erotic romance
+existentialist fiction
+experimental fiction
+fable
+fairy tale
+family saga
+fanfiction
+fantasy
+fantasy of manners
+ghost story
+gothic fiction
+hard fantasy
+heroic fantasy
+historical fantasy
+historical fiction
+historical romance
+historical whodunnit
+imaginary voyage
+juvenile fantasy
+legal thriller
+legend
+lost world
+lovecraftian
+low fantasy
+magic realism
+magical realism
+mathematical fiction
+medical fiction
+medical romance
+medical thriller
+medieval fantasy
+melodrama
+metafiction
+metahistorical romance
+military science fiction
+musical fiction
+mystery
+mystery fiction
+mythic
+nanopunk
+new weird
+non fiction
+occult detective
+occupational fiction
+parallel universe
+paranormal
+paranormal fantasy
+paranormal romance
+parody
+philosophical fiction
+philosophical horror
+planetary romance
+platonic dialogue
+political satire
+political thriller
+post-apocalyptic
+postcyberpunk
+prehistoric fantasy
+prehistoric fiction
+psychological
+psychological thriller
+realistic fiction
+regency 
+regency romance
+religious fiction
+romance 
+romantic comedy
+romantic fantasy
+saga
+satire
+school story
+science fantasy
+science fiction
+scientific romance
+sea story
+semi-autobiographical
+shenmo fantasy
+slipstream
+soft science fiction
+southern gothic
+space opera
+speculative cross-genre fiction
+speculative fiction
+splatterpunk
+sports fiction
+spy fiction
+steampunk
+superhero fantasy
+supernatural
+sword and planet
+sword and sorcery
+techno-thriller
+thriller
+tragedy
+tragicomedy
+urban fantasy
+urban fiction
+vampire fiction
+weird fiction
+werewolf fiction
+western
+workplace tell-all

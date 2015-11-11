@@ -1,0 +1,11 @@
+poem
+novel
+graphic novel
+drama
+visual novel
+short story
+memoir
+folk talk
+novella
+tale
+

@@ -1,0 +1,7 @@
+#{adjective} #{noun}
+The #{adjective} #{noun}
+#{noun} of #{noun}
+#{noun} and #{noun}
+The #{noun} of the #{noun}
+#{noun} in the #{noun}
+#{verb}

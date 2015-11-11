@@ -1,0 +1,65 @@
+kinodynamic planning
+simulation algorithm
+sequential algorithm
+super-recursive algorithm
+spreading activation
+adaptive algorithm
+lossy count algorithm
+algorithmic logic
+holographic algorithm
+divide and conquer algorithms
+hyphenation algorithm
+maze solving algorithm
+maze generation algorithm
+jump-and-walk algorithm
+streaming algorithm
+reservoir sampling
+pointer jumping
+temporal anti-aliasing
+machine learning algorithms
+data clustering algorithms
+checksum algorithms
+classification algorithms
+computational statistics
+computer algebra
+computer arithmetic algorithms
+digital signal processing
+evolutionary algorithms
+numerical analysis
+online algorithms
+pattern matching
+pseudo-polynomial time algorithms
+pseudorandom number generators
+recursion
+root-finding algorithms
+scheduling algorithms
+search algorithms
+sorting algorithms
+statistical algorithms
+unicode algorithms
+bioinformatics algorithms
+memory management algorithms
+stochastic algorithms
+concurrent algorithms
+distributed algorithms
+networking algorithms
+database algorithms
+matrix multiplication algorithms
+combinatorial algorithms
+compression algorithms
+computational group theory
+computational number theory
+selection algorithms
+randomized algorithms
+external memory algorithms
+approximation algorithms
+computational physics
+cryptographic algorithms
+data mining
+geometric algorithms
+heuristic algorithms
+quantum algorithms
+routing algorithms
+anti-aliasing algorithms
+calendar algorithms
+fair division protocols
