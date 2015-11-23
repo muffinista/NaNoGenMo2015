@@ -94,6 +94,7 @@ class Setting
   transition from: :valley, to: [:river, :plains, :mountains]
   transition from: :plains, to: [:river, :mountains, :village]
   transition from: :village, to: [:river]
+  transition from: :mountains, to:[:river, :plains]
   
   def initialize(val=nil)
     val ||= default_state
@@ -136,8 +137,11 @@ class Weather
   include FSM
   default_chance 0.25
 
-  transition from: :sunny, to: [ :rain ]
-  transition from: :rain, to: [ :sunny ]  
+  transition from: :sunny, to: [ :rain, :gloomy ]
+  transition from: :gloomy, to: [ :sunny, :rain ]
+  transition from: :rain, to: [ :sunny, :storm ]
+  transition from: :storm, to:[ :rain, :epic ]
+  transition from: :epic, to:[ :epic, :sunny ]
 
   def initialize(val=nil)
     val ||= default_state
@@ -149,18 +153,23 @@ class Weather
   end
 end
 
-class Food
-  # start nice, degrade
-  # hunting
-end
+# class Food
+#   # start nice, degrade
+#   # hunting
+# end
 
 class Mood
   include FSM
   default_chance 0.25
 
-  transition from: :good, to: [:good, :bad]
-  transition from: :bad, to: [:good]  
+  transition from: :good_3, to: [:good_2]
+  transition from: :good_2, to: [:good_3, :good_1]
+  transition from: :good_1, to: [:bad_1, :good_2]    
 
+  transition from: :bad_1, to: [:bad_2, :good_1]    
+  transition from: :bad_2, to: [:bad_3, :bad_1]
+  transition from: :bad_3, to: [:bad_2]
+  
   def initialize(val=nil)
     val ||= default_state
     set_state val
@@ -192,28 +201,15 @@ class Actor
 end
 
 
-# class Location
-#   attr_accessor :setting
-
-#   def initialize
-#     @setting = Setting.new
-#   end
-
-#   def to_s
-#     @setting.to_s
-#   end 
-# end
-
-
-WAYPOINT_ATTRS = [:weather, :setting, :climate, :mood]
-
 class Waypoint
   # location
   # weather
   # array of entries
   @@index = 0
 
-  WAYPOINT_ATTRS.each { |a|
+  ATTRS = [:weather, :setting, :climate, :mood]
+  
+  ATTRS.each { |a|
     attr_accessor a
   }
   
@@ -222,10 +218,14 @@ class Waypoint
     @index = @@index
 
     num_speakers = rand(1..4)
-    @speakers = $actors.sample(num_speakers)
+    if last_waypoint.nil?
+      @speakers = ([$actors.first] + $actors.sample(num_speakers)).uniq
+    else
+      @speakers = $actors.sample(num_speakers)
+    end
     
     @last_waypoint = last_waypoint
-    WAYPOINT_ATTRS.each { |a|
+    ATTRS.each { |a|
       puts a
       klass = Object.const_get(a.to_s.capitalize)
       val = @last_waypoint.nil? ? klass.new : @last_waypoint.send(a).next
@@ -240,7 +240,7 @@ class Waypoint
   def to_s
     [
       "##{@index}",
-      #"Location: #{@location}",
+      "Setting: #{@setting}",
       "Weather: #{@weather}",
       "Mood: #{@mood}",
       "Speakers: #{@speakers.collect(&:to_s).join(' ')}"
@@ -266,17 +266,27 @@ end
 
 
 $actors = build_actors
-#@current_location = Location.new
 @waypoints = []
 
 def generate_waypoint
   result = if @waypoints.last.nil?
              Waypoint.new
            else
-             @waypoints.last.generate_waypoint(@waypoints.last)
+             @waypoints.last.next
            end
 
   @waypoints << result
 
   result 
+end
+
+
+if __FILE__ == $0
+  1.upto(100) {
+    generate_waypoint
+  }
+
+  @waypoints.each { |w|
+    puts w.to_s
+  }
 end
