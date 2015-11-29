@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+#
+# rough code for my journey/travelogue entry, which never really materialized
+# 
+
 module FSM
   class << self
     def included(base)
@@ -39,9 +43,9 @@ module FSM
     end
     
     def pick_next_state
-      puts "current state #{current_state}"
+      #puts "current state #{current_state}"
       opts = transitions[current_state]
-      puts opts.inspect
+      #puts opts.inspect
       if opts.is_a?(Array)
         opts.sample
       else
@@ -58,7 +62,6 @@ module FSM
     end
 
     def next
-      puts "FSM NEXT"
       self.class.new(next_state)
     end
   end
@@ -68,41 +71,13 @@ module FSM
     # transition from: :blah, to: [:bar, :baz]
     #
     def transition(opts)
-      puts "defining #{opts.inspect}"
+      #puts "defining #{opts.inspect}"
       class_variable_get(:@@transitions_for)[opts[:from]] = opts[:to]      
     end
 
     def default_chance(x)
       class_variable_set :@@default_chance, x
     end
-  end
-end
-
-
-class Setting
-  include FSM
-
-  default_chance 0.3
-  
-  transition from: :ocean, to: [:river]
-  transition from: :river, to: {
-               :river => 0.25,
-               :valley => 0.25,
-               :plains => 0.25,
-               :village => 0.25
-             }
-  transition from: :valley, to: [:river, :plains, :mountains]
-  transition from: :plains, to: [:river, :mountains, :village]
-  transition from: :village, to: [:river]
-  transition from: :mountains, to:[:river, :plains]
-  
-  def initialize(val=nil)
-    val ||= default_state
-    set_state val
-  end
-
-  def to_s
-    @state.to_s
   end
 end
 
@@ -153,11 +128,6 @@ class Weather
   end
 end
 
-# class Food
-#   # start nice, degrade
-#   # hunting
-# end
-
 class Mood
   include FSM
   default_chance 0.25
@@ -180,19 +150,86 @@ class Mood
   end
 end
 
+class JournalGenerator
+  def initialize(writer, waypoint)
+    @writer = writer
+    @waypoint = waypoint
+  end
+
+  # general status
+  # report on specific area
+  # something about another person
+  
+  def captain
+    [
+      "Captain's Log, Day #{@waypoint.date}",
+      "a bit about the weather",
+      "According to our ",
+      "remark about member of voyage"
+    ]
+  end
+
+  def officer
+    [
+      "the date",
+      "determining location",
+      "report on morale"
+    ]
+  end
+
+  def poet
+    [
+      "a bunch of poetry about conditions"
+    ]
+  end
+
+  def scientist
+    [
+      "some scientific readings",
+      "notes on science"
+    ]
+  end
+
+  def machine
+    [
+      "lots of numbers/etc"
+    ]
+  end
+
+  def artist
+    [
+      "photo, etc"
+    ]
+  end
+  
+  def output
+    send(@writer.role)
+  end
+end
+
+
 class Actor
   # name
   # mood
   # also :captain but you can't pick that randomly
-  TYPES = [:officer, :poet, :scientist, :machine, :artist, :stowaway]
+
+  attr_accessor :role
+
+  TYPES = [:officer, :poet, :scientist, :machine, :artist]
   def initialize(role=nil)
-    @role ||= TYPES.sample
-    @mood = Mood.new
+    role ||= TYPES.sample
+
+    @role = role
+    #@mood = Mood.new
     @alive = true
   end
 
   def alive?
     @alive
+  end
+
+  def journal(waypoint)
+    JournalGenerator.new(self, waypoint).output
   end
 
   def to_s
@@ -207,7 +244,10 @@ class Waypoint
   # array of entries
   @@index = 0
 
-  ATTRS = [:weather, :setting, :climate, :mood]
+  attr_accessor :speakers
+  attr_accessor :last_waypoint
+  
+  ATTRS = [:weather, :climate, :mood]
   
   ATTRS.each { |a|
     attr_accessor a
@@ -219,18 +259,22 @@ class Waypoint
 
     num_speakers = rand(1..4)
     if last_waypoint.nil?
-      @speakers = ([$actors.first] + $actors.sample(num_speakers)).uniq
+      captain = $actors.select { |a| a.role == :captain }.first
+      @speakers = ([captain] + $actors.sample(num_speakers)).uniq
     else
       @speakers = $actors.sample(num_speakers)
     end
     
     @last_waypoint = last_waypoint
     ATTRS.each { |a|
-      puts a
       klass = Object.const_get(a.to_s.capitalize)
       val = @last_waypoint.nil? ? klass.new : @last_waypoint.send(a).next
       self.send("#{a.to_s}=".to_sym, val)
     }
+  end
+
+  def date
+    @index
   end
 
   def next
@@ -240,7 +284,6 @@ class Waypoint
   def to_s
     [
       "##{@index}",
-      "Setting: #{@setting}",
       "Weather: #{@weather}",
       "Mood: #{@mood}",
       "Speakers: #{@speakers.collect(&:to_s).join(' ')}"
@@ -259,8 +302,7 @@ def build_actors
     Actor.new(:scientist),
     Actor.new(:scientist),    
     Actor.new(:machine),
-    Actor.new(:artist),
-    Actor.new(:stowaway)    
+    Actor.new(:artist)
   ]
 end
 
@@ -288,5 +330,9 @@ if __FILE__ == $0
 
   @waypoints.each { |w|
     puts w.to_s
+    w.speakers.each { |s|
+      puts "#{s} has something to say"
+      puts s.journal(w).join(". ")
+    }
   }
 end
