@@ -26,7 +26,13 @@ prefixes = [
 
 output = ""
 
-output << "CHAPTER #{chapter_index.to_words.upcase}\n\n"
+def chapter_heading(i)
+  base = "CHAPTER #{i.to_words.upcase}"
+  underline = "=" * base.length
+  "#{base}\n#{underline}\n\n"
+end
+
+output << chapter_heading(chapter_index)
 
 while output.split.length < 50_000
   sent = src.sample
@@ -39,7 +45,7 @@ while output.split.length < 50_000
 
     chapter_index = chapter_index + 1
 
-    output << "CHAPTER #{chapter_index.to_words.upcase}\n\n"
+    output << chapter_heading(chapter_index)
 
   else
     if $rng.rand > 0.85
