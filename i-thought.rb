@@ -6,7 +6,7 @@ seed = ARGV[0] || Random.new_seed
 STDERR.puts "USING SEED #{seed}"
 $rng = Random.new(seed)
 
-src = File.read("i-thought-about.txt").split(/\n/)
+@src = File.read("i-thought-about.txt").split(/\n/)
 
 chapter_index = 1
 
@@ -28,18 +28,33 @@ output = ""
 
 def chapter_heading(i)
   base = "CHAPTER #{i.to_words.upcase}"
-  underline = "=" * base.length
+  underline = "-" * base.length
   "#{base}\n#{underline}\n\n"
 end
 
+def random_sentence
+  @src.sample(random: $rng).dup
+end
+
+output << "WHAT I THOUGHT ABOUT"
+output << "====================\n\n\n"
 output << chapter_heading(chapter_index)
 
 while output.split.length < 50_000
-  sent = src.sample
+  sent = random_sentence
+  style = $rng.rand
+  if style > 0.85
+    sent = "#{prefixes.sample(random: $rng)} #{sent}"
+  elsif style > 0.75
+    sent << " and #{random_sentence}"
+  end
+
+  sent <<  ". "
+  
   if $rng.rand > 0.99
     output << "\n\n"
     1.upto($rng.rand(5..15)) do
-      output << "#{sent}.\n"
+      output << "#{sent}\n"
     end
     output << "\n\n"
 
@@ -48,10 +63,7 @@ while output.split.length < 50_000
     output << chapter_heading(chapter_index)
 
   else
-    if $rng.rand > 0.85
-      sent = "#{prefixes.sample} #{sent}"
-    end
-    output << "#{sent}. "
+    output << sent
     
     if $rng.rand > 0.95
       output << "\n\n"
@@ -60,5 +72,7 @@ while output.split.length < 50_000
 end
 
 output << "\n\nI thought about the end.\n\n\n\n"
+
+output << "(Seed #{seed})"
 
 puts output
