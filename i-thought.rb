@@ -36,7 +36,7 @@ def random_sentence
   @src.sample(random: $rng).dup
 end
 
-output << "WHAT I THOUGHT ABOUT"
+output << "WHAT I THOUGHT ABOUT\n"
 output << "====================\n\n\n"
 output << chapter_heading(chapter_index)
 
@@ -54,7 +54,7 @@ while output.split.length < 50_000
   if $rng.rand > 0.99
     output << "\n\n"
     1.upto($rng.rand(5..15)) do
-      output << "#{sent}\n"
+      output << "#{sent}\n\n"
     end
     output << "\n\n"
 
@@ -65,7 +65,7 @@ while output.split.length < 50_000
   else
     output << sent
     
-    if $rng.rand > 0.95
+    if $rng.rand > 0.85
       output << "\n\n"
     end
   end
